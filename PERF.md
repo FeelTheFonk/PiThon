@@ -27,11 +27,11 @@
 21. [📦 Optimisation de la Sérialisation](#21--optimisation-de-la-sérialisation)
 22. [🧵 Utilisation de la Concurrence avec les Futures](#22--utilisation-de-la-concurrence-avec-les-futures)
 23. [🗜️ Compression des Données](#23-️-compression-des-données)
-
+    
 ---
 
 ## 1. 🔬 Profilage et Benchmarking
-
+<details>
 Le profilage et le benchmarking sont des techniques essentielles pour identifier les goulots d'étranglement de performance dans votre code Python et mesurer précisément le temps d'exécution des différentes parties de votre programme.
 
 ### 🔍 Profilage
@@ -151,11 +151,12 @@ print(f"Différence : {abs(t1-t2):.6f}s")
 4. **Automatisez vos benchmarks** : Intégrez des tests de performance automatisés dans votre pipeline CI/CD pour détecter les régressions de performance.
 
 5. **Contextualisez vos résultats** : Interprétez les résultats de profilage et de benchmarking dans le contexte de votre application et de ses exigences spécifiques.
+</details>
 
 ---
 
 ## 2. 🗃️ Choix des Structures de Données
-
+<details>
 Le choix judicieux des structures de données est crucial pour optimiser les performances de votre code Python. Chaque structure de données a ses propres caractéristiques en termes de temps d'accès, de modification et d'utilisation de la mémoire.
 
 ### 📊 Listes vs Tuples
@@ -242,24 +243,6 @@ resultat_numpy = array_numpy * 2
 - Utilisez NumPy pour des opérations mathématiques sur de grandes quantités de données.
 - Les arrays NumPy sont plus efficaces en mémoire et en calcul pour les opérations mathématiques.
 
-### 🏆 Comparaison des performances
-
-Voici un exemple de comparaison des performances entre différentes structures de données :
-
-```python
-import timeit
-
-def test_list():
-    return 999999 in [i for i in range(1000000)]
-
-def test_set():
-    return 999999 in {i for i in range(1000000)}
-
-print("Test avec liste :", timeit.timeit(test_list, number=100))
-print("Test avec set  :", timeit.timeit(test_set, number=100))
-```
-
-Ce code montre généralement que le test d'appartenance est beaucoup plus rapide avec un set qu'avec une liste pour de grands ensembles de données.
 
 ### 📊 Tableau récapitulatif
 
@@ -271,11 +254,12 @@ Ce code montre généralement que le test d'appartenance est beaucoup plus rapid
 | Set       | Test d'appartenance rapide | Non ordonné | Ensembles uniques |
 | deque     | Ajout/suppression rapide aux extrémités | Accès par index plus lent | Files, piles |
 | NumPy array | Opérations vectorielles rapides | Moins flexible | Calculs numériques intensifs |
+</details>
 
 ---
 
 ## 3. 🧮 Optimisation des Algorithmes
-
+<details>
 L'optimisation des algorithmes est une étape cruciale pour améliorer les performances de votre code Python. Un bon algorithme peut faire la différence entre un programme qui s'exécute en quelques secondes et un qui prend des heures.
 
 ### 🔍 Complexité algorithmique
@@ -391,48 +375,7 @@ Temps d'exécution
 4. **Appliquez la programmation dynamique** : Pour les problèmes avec des sous-problèmes qui se chevauchent, utilisez la mémoïsation ou la tabulation.
 
 5. **Optimisez les cas fréquents** : Concevez vos algorithmes pour qu'ils soient particulièrement efficaces pour les cas d'utilisation les plus courants.
-
-
-### 🔬 Exemple d'optimisation : Calcul de Fibonacci
-
-Comparons différentes implémentations du calcul de la suite de Fibonacci :
-
-```python
-import time
-
-def fib_recursif(n):
-    if n <= 1:
-        return n
-    return fib_recursif(n-1) + fib_recursif(n-2)
-
-def fib_dynamique(n):
-    fib = [0, 1]
-    for i in range(2, n+1):
-        fib.append(fib[i-1] + fib[i-2])
-    return fib[n]
-
-def fib_optimise(n):
-    a, b = 0, 1
-    for _ in range(n):
-        a, b = b, a + b
-    return a
-
-# Comparaison des performances
-n = 30
-start = time.time()
-print(f"Récursif: {fib_recursif(n)}")
-print(f"Temps: {time.time() - start:.6f} secondes")
-
-start = time.time()
-print(f"Dynamique: {fib_dynamique(n)}")
-print(f"Temps: {time.time() - start:.6f} secondes")
-
-start = time.time()
-print(f"Optimisé: {fib_optimise(n)}")
-print(f"Temps: {time.time() - start:.6f} secondes")
-```
-
-Ce code compare trois implémentations différentes du calcul de Fibonacci, montrant comment l'optimisation peut considérablement améliorer les performances.
+   
 
 ### 📈 Visualisation des performances de Fibonacci
 
@@ -465,50 +408,6 @@ Temps d'exécution (échelle log)
 
 5. **Approximation** : Pour certains problèmes NP-difficiles, utilisez des algorithmes d'approximation avec des garanties de performance.
 
-### 🎯 Exemple : Optimisation du tri
-
-Comparons les performances de différents algorithmes de tri :
-
-```python
-import random
-import time
-
-def tri_bulle(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-    return arr
-
-def tri_rapide(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2]
-    gauche = [x for x in arr if x < pivot]
-    milieu = [x for x in arr if x == pivot]
-    droite = [x for x in arr if x > pivot]
-    return tri_rapide(gauche) + milieu + tri_rapide(droite)
-
-def mesurer_temps(func, arr):
-    debut = time.time()
-    func(arr.copy())
-    fin = time.time()
-    return fin - debut
-
-# Générer une liste aléatoire
-taille = 10000
-liste = [random.randint(1, 1000) for _ in range(taille)]
-
-# Comparer les performances
-temps_bulle = mesurer_temps(tri_bulle, liste)
-temps_rapide = mesurer_temps(tri_rapide, liste)
-temps_python = mesurer_temps(sorted, liste)
-
-print(f"Tri à bulles : {temps_bulle:.6f} secondes")
-print(f"Tri rapide   : {temps_rapide:.6f} secondes")
-print(f"Tri Python   : {temps_python:.6f} secondes")
-```
 
 ### 📊 Tableau comparatif des algorithmes de tri
 
@@ -520,6 +419,7 @@ print(f"Tri Python   : {temps_python:.6f} secondes")
 | Tri par tas | O(n log n) | O(n log n) | Non stable | O(1) |
 | Tri par insertion | O(n²) | O(n²) | Stable | O(1) |
 | Tri de Tim | O(n log n) | O(n log n) | Stable | O(n) |
+
 
 ### 🎨 Visualisation des performances de tri
 
@@ -543,11 +443,12 @@ Temps d'exécution (échelle log)
 L'optimisation des algorithmes est un art qui combine la compréhension théorique de la complexité algorithmique avec des techniques pratiques d'implémentation. En choisissant les bons algorithmes et en les implémentant efficacement, vous pouvez considérablement améliorer les performances de vos programmes Python.
 
 N'oubliez pas que l'optimisation prématurée peut être contre-productive. Commencez par écrire un code clair et correct, puis utilisez le profilage pour identifier les véritables goulots d'étranglement avant d'optimiser. Souvent, l'optimisation d'une petite partie critique du code peut apporter des gains de performance significatifs à l'ensemble de votre application.
+</details>
 
 ---
 
 ## 4. 🔄 Réduction des Appels de Fonction et des Boucles
-
+<details>
 La réduction des appels de fonction et l'optimisation des boucles sont des techniques cruciales pour améliorer les performances de votre code Python. Ces optimisations peuvent souvent conduire à des gains de performance significatifs, en particulier dans les parties critiques de votre application.
 
 ### 🔍 Réduction des appels de fonction
@@ -602,38 +503,6 @@ resultat = [i ** 2 for i in range(1000000) if i % 2 == 0]
 
 ### 📊 Comparaison de performance
 
-Voici un exemple comparant différentes approches :
-
-```python
-import time
-
-def methode_boucle():
-    resultat = []
-    for i in range(1000000):
-        if i % 2 == 0:
-            resultat.append(i ** 2)
-    return resultat
-
-def methode_comprehension():
-    return [i ** 2 for i in range(1000000) if i % 2 == 0]
-
-def methode_generateur():
-    return (i ** 2 for i in range(1000000) if i % 2 == 0)
-
-# Mesure du temps d'exécution
-def mesurer_temps(func):
-    debut = time.time()
-    func()
-    fin = time.time()
-    return fin - debut
-
-print(f"Boucle classique : {mesurer_temps(methode_boucle):.6f} secondes")
-print(f"Compréhension    : {mesurer_temps(methode_comprehension):.6f} secondes")
-print(f"Générateur       : {mesurer_temps(methode_generateur):.6f} secondes")
-```
-
-### 📈 Visualisation des performances
-
 ```
 Temps d'exécution
 ^
@@ -682,37 +551,6 @@ carres = nombres ** 2
 ```
 
 ### 📊 Comparaison de Performance
-
-Voici un exemple comparant différentes approches pour calculer le carré des nombres pairs d'une liste :
-
-```python
-import time
-import numpy as np
-
-def methode_boucle(nombres):
-    return [x**2 for x in nombres if x % 2 == 0]
-
-def methode_map_filter(nombres):
-    return list(map(lambda x: x**2, filter(lambda x: x % 2 == 0, nombres)))
-
-def methode_numpy(nombres):
-    arr = np.array(nombres)
-    return (arr[arr % 2 == 0] ** 2).tolist()
-
-def mesurer_temps(func, arg):
-    debut = time.time()
-    func(arg)
-    fin = time.time()
-    return fin - debut
-
-nombres = list(range(1000000))
-
-print(f"Boucle         : {mesurer_temps(methode_boucle, nombres):.6f} secondes")
-print(f"Map et Filter  : {mesurer_temps(methode_map_filter, nombres):.6f} secondes")
-print(f"Numpy          : {mesurer_temps(methode_numpy, nombres):.6f} secondes")
-```
-
-### 📈 Visualisation des Performances
 
 ```
 Temps d'exécution (échelle log)
@@ -792,49 +630,6 @@ for nombre in ma_liste:
 somme = sum(ma_liste)
 ```
 
-### 🔬 Analyse Approfondie : Impact de la Taille des Données
-
-Pour mieux comprendre l'impact de ces optimisations sur différentes tailles de données, voici une analyse comparative :
-
-```python
-import time
-import numpy as np
-
-def methode_boucle(n):
-    return [x**2 for x in range(n) if x % 2 == 0]
-
-def methode_map_filter(n):
-    return list(map(lambda x: x**2, filter(lambda x: x % 2 == 0, range(n))))
-
-def methode_numpy(n):
-    arr = np.arange(n)
-    return (arr[arr % 2 == 0] ** 2).tolist()
-
-def mesurer_temps(func, n):
-    debut = time.time()
-    func(n)
-    return time.time() - debut
-
-tailles = [100, 1000, 10000, 100000, 1000000]
-
-resultats = {
-    "Boucle": [],
-    "Map et Filter": [],
-    "Numpy": []
-}
-
-for taille in tailles:
-    resultats["Boucle"].append(mesurer_temps(methode_boucle, taille))
-    resultats["Map et Filter"].append(mesurer_temps(methode_map_filter, taille))
-    resultats["Numpy"].append(mesurer_temps(methode_numpy, taille))
-
-# Affichage des résultats
-for methode in resultats:
-    print(f"\n{methode}:")
-    for i, temps in enumerate(resultats[methode]):
-        print(f"  Taille {tailles[i]}: {temps:.6f} secondes")
-```
-
 ### 📊 Visualisation des Performances en Fonction de la Taille des Données
 
 ```
@@ -879,11 +674,12 @@ Temps d'exécution (échelle log)
 L'optimisation des boucles et la réduction des appels de fonction sont des techniques puissantes pour améliorer les performances de votre code Python. Cependant, il est crucial de trouver un équilibre entre performance, lisibilité et maintenabilité. 
 
 Utilisez ces techniques judicieusement, en vous basant sur des mesures concrètes et en gardant à l'esprit le contexte spécifique de votre application. N'oubliez pas que le code le plus rapide est souvent celui qui n'est pas exécuté du tout - parfois, repenser l'algorithme ou la structure de données peut apporter des gains de performance bien plus importants que l'optimisation à bas niveau.
+</details>
 
 ---
 
 ## 5. 💾 Gestion de la Mémoire
-
+<details>
 La gestion efficace de la mémoire est cruciale pour optimiser les performances de vos applications Python, en particulier pour les programmes qui traitent de grandes quantités de données ou qui s'exécutent pendant de longues périodes.
 
 ### 🔍 Comprendre la Gestion de la Mémoire en Python
@@ -962,43 +758,6 @@ Python utilise un système de gestion automatique de la mémoire, incluant un ga
    ```
 
 ### 📊 Comparaison de l'Utilisation de la Mémoire
-
-Voici un exemple comparant l'utilisation de la mémoire de différentes approches :
-
-```python
-import sys
-from array import array
-
-def taille_memoire(obj):
-    return sys.getsizeof(obj)
-
-# Comparaison liste vs array
-liste_nombres = list(range(1000000))
-array_nombres = array('i', range(1000000))
-
-print(f"Taille de la liste : {taille_memoire(liste_nombres)} bytes")
-print(f"Taille de l'array : {taille_memoire(array_nombres)} bytes")
-
-# Comparaison classe avec et sans __slots__
-class SansSlots:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-class AvecSlots:
-    __slots__ = ['x', 'y']
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-obj_sans_slots = SansSlots(1, 2)
-obj_avec_slots = AvecSlots(1, 2)
-
-print(f"Taille de l'objet sans slots : {taille_memoire(obj_sans_slots)} bytes")
-print(f"Taille de l'objet avec slots : {taille_memoire(obj_avec_slots)} bytes")
-```
-
-### 📈 Visualisation de l'Utilisation de la Mémoire
 
 ```
 Utilisation de la Mémoire (bytes)
@@ -1089,37 +848,6 @@ Utilisation de la Mémoire (bytes)
    ```
 
 ### 📊 Analyse Comparative de l'Utilisation de la Mémoire
-
-Voici un script qui compare l'utilisation de la mémoire de différentes structures de données :
-
-```python
-import sys
-import array
-from collections import deque
-
-def taille_memoire(obj):
-    return sys.getsizeof(obj)
-
-# Création de structures de données avec 1 million d'entiers
-liste = list(range(1000000))
-array_int = array.array('i', range(1000000))
-deque_obj = deque(range(1000000))
-set_obj = set(range(1000000))
-dict_obj = {i: i for i in range(1000000)}
-
-structures = {
-    "Liste": liste,
-    "Array": array_int,
-    "Deque": deque_obj,
-    "Set": set_obj,
-    "Dictionnaire": dict_obj
-}
-
-for nom, structure in structures.items():
-    print(f"{nom}: {taille_memoire(structure):,} bytes")
-```
-
-### 📈 Visualisation de l'Utilisation de la Mémoire
 
 ```
 Utilisation de la Mémoire (MB)
@@ -1235,11 +963,12 @@ La gestion efficace de la mémoire en Python est un équilibre entre l'utilisati
 Rappelez-vous que l'optimisation de la mémoire doit toujours être basée sur des mesures concrètes et non sur des suppositions. Utilisez des outils de profilage de mémoire pour identifier les véritables problèmes avant d'appliquer ces optimisations.
 
 La clé d'une gestion de mémoire réussie en Python est de trouver le juste équilibre entre l'efficacité, la lisibilité du code et la maintenabilité. Parfois, un code légèrement moins optimal en termes de mémoire peut être préférable s'il est plus clair et plus facile à maintenir.
+</details>
 
 ---
 
 ## 6. 📁 Optimisation des I/O
-
+<details>
 L'optimisation des opérations d'entrée/sortie (I/O) est cruciale pour améliorer les performances des applications Python, en particulier celles qui traitent de grandes quantités de données ou qui interagissent fréquemment avec le système de fichiers ou le réseau.
 
 ### 🔍 Comprendre les Opérations I/O en Python
@@ -1329,51 +1058,6 @@ Les opérations I/O peuvent être bloquantes, ce qui signifie qu'elles peuvent r
 
 ### 📊 Comparaison des Performances I/O
 
-Voici un exemple comparant différentes méthodes de lecture de fichiers :
-
-```python
-import time
-import mmap
-
-def lire_ligne_par_ligne(fichier):
-    with open(fichier, 'r') as f:
-        for ligne in f:
-            pass
-
-def lire_tout(fichier):
-    with open(fichier, 'r') as f:
-        contenu = f.read()
-
-def lire_par_blocs(fichier, taille_bloc=8192):
-    with open(fichier, 'rb') as f:
-        while True:
-            bloc = f.read(taille_bloc)
-            if not bloc:
-                break
-
-def lire_avec_mmap(fichier):
-    with open(fichier, 'r+b') as f:
-        mm = mmap.mmap(f.fileno(), 0)
-        mm.read()
-
-fichier_test = 'grand_fichier.txt'  # Assurez-vous d'avoir un grand fichier de test
-
-methodes = [
-    ("Ligne par ligne", lire_ligne_par_ligne),
-    ("Tout d'un coup", lire_tout),
-    ("Par blocs", lire_par_blocs),
-    ("Avec mmap", lire_avec_mmap)
-]
-
-for nom, methode in methodes:
-    debut = time.time()
-    methode(fichier_test)
-    duree = time.time() - debut
-    print(f"{nom}: {duree:.4f} secondes")
-```
-
-### 📈 Visualisation des Performances I/O
-
 ```
 Temps de lecture (secondes)
 ^
@@ -1452,85 +1136,6 @@ Temps de lecture (secondes)
    memmap = np.memmap('grand_fichier.bin', dtype='float32', mode='r', shape=(1000, 1000))
    # Traiter memmap comme un tableau NumPy
    ```
-
-### 📊 Analyse Comparative Approfondie
-
-Voici un script plus détaillé pour comparer les performances des différentes méthodes I/O :
-
-```python
-import time
-import mmap
-import io
-import os
-import numpy as np
-
-def creer_grand_fichier(nom, taille_mb):
-    with open(nom, 'wb') as f:
-        f.write(os.urandom(taille_mb * 1024 * 1024))
-
-def lire_ligne_par_ligne(fichier):
-    with open(fichier, 'r') as f:
-        for ligne in f:
-            pass
-
-def lire_tout(fichier):
-    with open(fichier, 'r') as f:
-        contenu = f.read()
-
-def lire_par_blocs(fichier, taille_bloc=8192):
-    with open(fichier, 'rb') as f:
-        while True:
-            bloc = f.read(taille_bloc)
-            if not bloc:
-                break
-
-def lire_avec_mmap(fichier):
-    with open(fichier, 'r+b') as f:
-        mm = mmap.mmap(f.fileno(), 0)
-        mm.read()
-
-def lire_avec_buffered_reader(fichier):
-    with open(fichier, 'rb') as f:
-        reader = io.BufferedReader(f)
-        while True:
-            bloc = reader.read(8192)
-            if not bloc:
-                break
-
-def lire_avec_numpy_memmap(fichier):
-    memmap = np.memmap(fichier, dtype='uint8', mode='r')
-    _ = memmap[:]
-
-fichier_test = 'fichier_test_io.bin'
-taille_fichier_mb = 100  # Taille du fichier de test en MB
-
-print(f"Création d'un fichier de test de {taille_fichier_mb} MB...")
-creer_grand_fichier(fichier_test, taille_fichier_mb)
-
-methodes = [
-    ("Ligne par ligne", lire_ligne_par_ligne),
-    ("Tout d'un coup", lire_tout),
-    ("Par blocs", lire_par_blocs),
-    ("Avec mmap", lire_avec_mmap),
-    ("BufferedReader", lire_avec_buffered_reader),
-    ("NumPy memmap", lire_avec_numpy_memmap)
-]
-
-resultats = []
-
-for nom, methode in methodes:
-    debut = time.time()
-    methode(fichier_test)
-    duree = time.time() - debut
-    resultats.append((nom, duree))
-    print(f"{nom}: {duree:.4f} secondes")
-
-# Nettoyage
-os.remove(fichier_test)
-
-# Tri des résultats par durée
-resultats.sort(key=lambda x: x[1])
-```
 
 ### 📈 Visualisation Avancée des Performances I/O
 
@@ -1649,9 +1254,12 @@ Les clés d'une optimisation I/O réussie sont :
 3. **Asynchronisme** : Utilisez des techniques asynchrones pour les opérations I/O concurrentes.
 4. **Mesure et profilage** : Basez toujours vos optimisations sur des mesures concrètes plutôt que sur des suppositions.
 5. **Adaptation au contexte** : Tenez compte de l'environnement d'exécution (système de fichiers, réseau, etc.) lors de l'optimisation.
+</details>
+
+---
 
 ## 7. 🛠️ Utilisation des Fonctions et Méthodes
-
+<details>
 L'optimisation de l'utilisation des fonctions et méthodes en Python peut avoir un impact significatif sur les performances de votre code. Cette section explore les meilleures pratiques pour définir, appeler et utiliser efficacement les fonctions et méthodes.
 
 ### 🔍 Principes Fondamentaux
@@ -1738,65 +1346,6 @@ class MaClasse:
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances de différentes approches :
-
-```python
-import time
-import functools
-
-def mesurer_temps(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        debut = time.perf_counter()
-        resultat = func(*args, **kwargs)
-        fin = time.perf_counter()
-        print(f"{func.__name__} a pris {fin - debut:.6f} secondes")
-        return resultat
-    return wrapper
-
-@mesurer_temps
-def somme_boucle():
-    return sum(i for i in range(10**7))
-
-@mesurer_temps
-def somme_integree():
-    return sum(range(10**7))
-
-@mesurer_temps
-def appel_fonction_dans_boucle():
-    def carre(x):
-        return x * x
-    return sum(carre(i) for i in range(10**5))
-
-@mesurer_temps
-def appel_fonction_hors_boucle():
-    carre = lambda x: x * x
-    return sum(carre(i) for i in range(10**5))
-
-@mesurer_temps
-def fibonacci_sans_memo(n):
-    if n < 2:
-        return n
-    return fibonacci_sans_memo(n-1) + fibonacci_sans_memo(n-2)
-
-@mesurer_temps
-@functools.lru_cache(maxsize=None)
-def fibonacci_avec_memo(n):
-    if n < 2:
-        return n
-    return fibonacci_avec_memo(n-1) + fibonacci_avec_memo(n-2)
-
-# Exécution des tests
-somme_boucle()
-somme_integree()
-appel_fonction_dans_boucle()
-appel_fonction_hors_boucle()
-fibonacci_sans_memo(30)
-fibonacci_avec_memo(30)
-```
-
-### 📈 Visualisation des Performances
 
 ```
 Temps d'exécution (échelle logarithmique)
@@ -1906,9 +1455,12 @@ Rappelez-vous toujours de :
 2. **Mesurer l'impact** : Vérifiez que vos optimisations apportent réellement une amélioration.
 3. **Maintenir la lisibilité** : Un code optimisé mais illisible peut être contre-productif à long terme.
 4. **Considérer le contexte** : Certaines optimisations peuvent être plus ou moins efficaces selon le contexte d'exécution.
+</details>
+
+---
 
 ## 8. ⚠️ Gestion des Exceptions
-
+<details>
 La gestion efficace des exceptions est cruciale non seulement pour la robustesse du code, mais aussi pour ses performances. Une mauvaise gestion des exceptions peut significativement ralentir l'exécution du programme.
 
 ### 🔍 Principes Fondamentaux
@@ -1995,63 +1547,6 @@ def diviseur(a, b):
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances de différentes approches de gestion des exceptions :
-
-```python
-import time
-import statistics
-
-def mesurer_temps(func, *args):
-    debut = time.perf_counter()
-    func(*args)
-    return time.perf_counter() - debut
-
-def avec_exception():
-    try:
-        1 / 0
-    except ZeroDivisionError:
-        pass
-
-def sans_exception():
-    if 0 != 0:
-        1 / 0
-    else:
-        pass
-
-def lbyl(dict_test, key):
-    if key in dict_test:
-        return dict_test[key]
-    return None
-
-def eafp(dict_test, key):
-    try:
-        return dict_test[key]
-    except KeyError:
-        return None
-
-# Préparation des tests
-iterations = 100000
-dict_test = {'a': 1, 'b': 2, 'c': 3}
-
-# Exécution des tests
-temps_avec_exception = [mesurer_temps(avec_exception) for _ in range(iterations)]
-temps_sans_exception = [mesurer_temps(sans_exception) for _ in range(iterations)]
-temps_lbyl = [mesurer_temps(lbyl, dict_test, 'a') for _ in range(iterations)]
-temps_eafp = [mesurer_temps(eafp, dict_test, 'a') for _ in range(iterations)]
-temps_lbyl_miss = [mesurer_temps(lbyl, dict_test, 'z') for _ in range(iterations)]
-temps_eafp_miss = [mesurer_temps(eafp, dict_test, 'z') for _ in range(iterations)]
-
-# Affichage des résultats
-print(f"Avec Exception    : {statistics.mean(temps_avec_exception):.9f} secondes")
-print(f"Sans Exception    : {statistics.mean(temps_sans_exception):.9f} secondes")
-print(f"LBYL (hit)        : {statistics.mean(temps_lbyl):.9f} secondes")
-print(f"EAFP (hit)        : {statistics.mean(temps_eafp):.9f} secondes")
-print(f"LBYL (miss)       : {statistics.mean(temps_lbyl_miss):.9f} secondes")
-print(f"EAFP (miss)       : {statistics.mean(temps_eafp_miss):.9f} secondes")
-```
-
-### 📈 Visualisation des Performances
 
 ```
 Temps d'exécution (échelle logarithmique)
@@ -2151,9 +1646,12 @@ Points clés à retenir :
 3. **EAFP vs LBYL** : Préférez généralement EAFP, mais soyez conscient des cas où LBYL peut être plus approprié.
 4. **Performance** : Évitez d'utiliser les exceptions pour le contrôle de flux normal du programme.
 5. **Nettoyage** : Utilisez `finally` ou les gestionnaires de contexte pour assurer un nettoyage approprié.
+</details>
+
+---
 
 ## 9. 🧵 Concurrency et Parallelism
-
+<details>
 La concurrence et le parallélisme sont des techniques puissantes pour améliorer les performances des applications Python, en particulier pour les tâches intensives en I/O ou en CPU. Comprendre et utiliser efficacement ces concepts peut considérablement accélérer l'exécution de votre code.
 
 ### 🔍 Concepts Clés
@@ -2239,60 +1737,6 @@ print(f"Temps d'exécution: {fin - debut:.2f} secondes")
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances des différentes approches :
-
-```python
-import time
-import threading
-import multiprocessing
-import asyncio
-
-def tache_io():
-    time.sleep(1)
-
-def tache_cpu():
-    return sum(i * i for i in range(10**7))
-
-async def tache_async():
-    await asyncio.sleep(1)
-
-def executer_sequentiel(n):
-    debut = time.time()
-    for _ in range(n):
-        tache_io()
-    return time.time() - debut
-
-def executer_threading(n):
-    debut = time.time()
-    threads = [threading.Thread(target=tache_io) for _ in range(n)]
-    for t in threads:
-        t.start()
-    for t in threads:
-        t.join()
-    return time.time() - debut
-
-def executer_multiprocessing(n):
-    debut = time.time()
-    with multiprocessing.Pool(processes=n) as pool:
-        pool.map(tache_cpu, range(n))
-    return time.time() - debut
-
-async def executer_asyncio(n):
-    debut = time.time()
-    await asyncio.gather(*[tache_async() for _ in range(n)])
-    return time.time() - debut
-
-if __name__ == '__main__':
-    n = 10  # Nombre de tâches
-
-    print(f"Séquentiel: {executer_sequentiel(n):.2f} secondes")
-    print(f"Threading: {executer_threading(n):.2f} secondes")
-    print(f"Multiprocessing: {executer_multiprocessing(n):.2f} secondes")
-    print(f"Asyncio: {asyncio.run(executer_asyncio(n)):.2f} secondes")
-```
-
-### 📈 Visualisation des Performances
 
 ```
 Temps d'exécution (secondes)
@@ -2420,9 +1864,12 @@ Points clés à retenir :
 3. **asyncio** pour les applications avec un grand nombre d'opérations I/O concurrentes.
 4. **Combinez les techniques** pour des applications complexes avec des besoins mixtes.
 5. **Mesurez toujours** les performances avant et après l'implémentation de la concurrence ou du parallélisme.
+</details>
+
+---
 
 ## 10. 🔧 Utilisation des Compilateurs et des Extensions
-
+<details>
 L'utilisation de compilateurs et d'extensions peut considérablement améliorer les performances de votre code Python, en particulier pour les parties critiques nécessitant une exécution rapide. Cette section explore les différentes options disponibles et leurs impacts sur les performances.
 
 ### 🔍 Concepts Clés
@@ -2518,57 +1965,6 @@ $ pypy3 mon_script.py
 
 ### 📊 Analyse Comparative
 
-Voici un script pour comparer les performances des différentes approches :
-
-```python
-import time
-import numpy as np
-from numba import jit
-
-# Fonction Python pure
-def python_pur(x, y):
-    resultat = 0
-    for i in range(len(x)):
-        resultat += x[i] * y[i]
-    return resultat
-
-# Fonction Numba
-@jit(nopython=True)
-def numba_fonction(x, y):
-    resultat = 0
-    for i in range(len(x)):
-        resultat += x[i] * y[i]
-    return resultat
-
-# Fonction NumPy
-def numpy_fonction(x, y):
-    return np.dot(x, y)
-
-# Fonction Cython (supposons qu'elle est importée)
-from exemple_cython import fonction_cython
-
-# Fonction C (supposons qu'elle est importée)
-import module_c
-
-def mesurer_temps(func, *args):
-    debut = time.time()
-    resultat = func(*args)
-    fin = time.time()
-    return fin - debut
-
-taille = 10**7
-x = np.random.rand(taille)
-y = np.random.rand(taille)
-
-print(f"Python pur: {mesurer_temps(python_pur, x, y):.6f} secondes")
-print(f"Numba: {mesurer_temps(numba_fonction, x, y):.6f} secondes")
-print(f"NumPy: {mesurer_temps(numpy_fonction, x, y):.6f} secondes")
-print(f"Cython: {mesurer_temps(fonction_cython, x, y):.6f} secondes")
-print(f"C Extension: {mesurer_temps(module_c.fonction_c, 1000, 1000):.6f} secondes")
-```
-
-### 📈 Visualisation des Performances
-
 ```
 Temps d'exécution (échelle logarithmique)
 ^
@@ -2661,9 +2057,12 @@ Points clés à retenir :
 5. **Extensions C pour les performances extrêmes** : Réservez les extensions C pour les parties les plus critiques.
 6. **Considérez PyPy** : Pour les applications Python pures, PyPy peut offrir des gains de performance significatifs.
 7. **Équilibre** : Trouvez l'équilibre entre performance, lisibilité et maintenabilité du code.
+</details>
+
+---
 
 ## 11. 📦 Optimisation des Importations
-
+<details>
 L'optimisation des importations est souvent négligée, mais elle peut avoir un impact significatif sur les performances de démarrage et l'utilisation de la mémoire de votre application Python. Cette section explore les meilleures pratiques pour gérer efficacement les importations.
 
 ### 🔍 Concepts Clés
@@ -2720,47 +2119,6 @@ sys.path.insert(0, os.path.abspath('chemin/vers/modules'))
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances des différentes approches d'importation :
-
-```python
-import timeit
-import sys
-import os
-
-def import_global():
-    import math
-    return math.pi
-
-def import_fonction():
-    def inner():
-        import math
-        return math.pi
-    return inner()
-
-def import_from():
-    from math import pi
-    return pi
-
-def mesurer_temps(stmt, setup="pass", number=1000000):
-    return timeit.timeit(stmt, setup=setup, number=number)
-
-print(f"Import global: {mesurer_temps('import_global()'):.6f} secondes")
-print(f"Import dans fonction: {mesurer_temps('import_fonction()'):.6f} secondes")
-print(f"Import from: {mesurer_temps('import_from()'):.6f} secondes")
-
-# Mesurer l'impact sur sys.path
-chemin_original = sys.path.copy()
-sys.path.insert(0, '/chemin/non/existant')
-temps_avec_chemin = mesurer_temps("import math", number=1000)
-sys.path = chemin_original
-temps_sans_chemin = mesurer_temps("import math", number=1000)
-
-print(f"Temps avec chemin ajouté: {temps_avec_chemin:.6f} secondes")
-print(f"Temps sans chemin ajouté: {temps_sans_chemin:.6f} secondes")
-```
-
-### 📈 Visualisation des Performances d'Importation
 
 ```
 Temps d'importation (échelle logarithmique)
@@ -2859,9 +2217,12 @@ Points clés à retenir :
 4. **Évitez les cycles** : Restructurez votre code pour éviter les dépendances circulaires.
 5. **Importations dynamiques** : Utilisez `importlib` pour plus de flexibilité.
 6. **Testez et mesurez** : Vérifiez toujours l'impact de vos optimisations sur les performances réelles.
+</details>
+
+---
 
 ## 12. 📝 Pratiques de Codage Générales
-
+<details>
 Les pratiques de codage générales jouent un rôle crucial dans l'optimisation des performances de votre code Python. Cette section explore les meilleures pratiques qui, bien qu'elles puissent sembler mineures individuellement, peuvent collectivement avoir un impact significatif sur les performances globales de votre application.
 
 ### 🔍 Concepts Clés
@@ -2926,58 +2287,6 @@ chaine = ''.join(str(i) for i in range(1000))
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances de différentes approches de codage :
-
-```python
-import timeit
-import statistics
-
-def test_boucle_classique():
-    resultat = []
-    for i in range(1000):
-        resultat.append(i * 2)
-    return resultat
-
-def test_comprehension_liste():
-    return [i * 2 for i in range(1000)]
-
-def test_concatenation_chaine():
-    resultat = ""
-    for i in range(1000):
-        resultat += str(i)
-    return resultat
-
-def test_join_chaine():
-    return ''.join(str(i) for i in range(1000))
-
-def test_recherche_liste():
-    liste = list(range(1000))
-    return 500 in liste
-
-def test_recherche_set():
-    ensemble = set(range(1000))
-    return 500 in ensemble
-
-def mesurer_temps(func, nombre=1000):
-    temps = timeit.repeat(func, number=nombre, repeat=5)
-    return statistics.mean(temps)
-
-tests = [
-    ("Boucle classique", test_boucle_classique),
-    ("Compréhension de liste", test_comprehension_liste),
-    ("Concaténation de chaîne", test_concatenation_chaine),
-    ("Join de chaîne", test_join_chaine),
-    ("Recherche dans liste", test_recherche_liste),
-    ("Recherche dans set", test_recherche_set)
-]
-
-for nom, test in tests:
-    temps = mesurer_temps(test)
-    print(f"{nom}: {temps:.6f} secondes")
-```
-
-### 📈 Visualisation des Performances de Codage
 
 ```
 Temps d'exécution (échelle logarithmique)
@@ -3076,9 +2385,12 @@ Points clés à retenir :
 4. **Profitez des fonctionnalités intégrées** : Les fonctions et méthodes intégrées sont souvent plus rapides que les implémentations personnalisées.
 5. **Lisibilité compte** : Un code lisible est plus facile à optimiser et à maintenir à long terme.
 6. **Mesurez avant d'optimiser** : Utilisez toujours des outils de profilage pour identifier les véritables goulots d'étranglement.
+</details>
+
+---
 
 ## 13. 🗃️ Utilisation des LRU Cache
-
+<details>
 Le LRU (Least Recently Used) Cache est une technique puissante pour optimiser les performances des fonctions coûteuses en temps d'exécution, en particulier celles qui sont appelées fréquemment avec les mêmes arguments. Cette section explore en détail l'utilisation et l'optimisation du LRU Cache en Python.
 
 ### 🔍 Concepts Clés
@@ -3140,57 +2452,6 @@ def fonction_avec_expiration(x):
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances avec et sans LRU Cache :
-
-```python
-import time
-from functools import lru_cache
-
-def fibonacci_sans_cache(n):
-    if n < 2:
-        return n
-    return fibonacci_sans_cache(n-1) + fibonacci_sans_cache(n-2)
-
-@lru_cache(maxsize=None)
-def fibonacci_avec_cache(n):
-    if n < 2:
-        return n
-    return fibonacci_avec_cache(n-1) + fibonacci_avec_cache(n-2)
-
-def mesurer_temps(func, *args):
-    debut = time.time()
-    resultat = func(*args)
-    fin = time.time()
-    return fin - debut
-
-# Test pour différentes valeurs de n
-valeurs_n = [10, 20, 30, 35]
-
-print("Fibonacci sans cache:")
-for n in valeurs_n:
-    temps = mesurer_temps(fibonacci_sans_cache, n)
-    print(f"n = {n}: {temps:.6f} secondes")
-
-print("\nFibonacci avec cache:")
-for n in valeurs_n:
-    temps = mesurer_temps(fibonacci_avec_cache, n)
-    print(f"n = {n}: {temps:.6f} secondes")
-
-# Test de l'impact de la taille du cache
-print("\nImpact de la taille du cache:")
-for taille in [10, 50, 100, None]:
-    @lru_cache(maxsize=taille)
-    def fib_test(n):
-        if n < 2:
-            return n
-        return fib_test(n-1) + fib_test(n-2)
-    
-    temps = mesurer_temps(fib_test, 100)
-    print(f"Taille du cache = {taille}: {temps:.6f} secondes")
-```
-
-### 📈 Visualisation des Performances avec LRU Cache
 
 ```
 Temps d'exécution (échelle logarithmique)
@@ -3277,9 +2538,12 @@ Points clés à retenir :
 3. **Considérez la fraîcheur des données** : Utilisez des caches avec expiration pour les données dynamiques.
 4. **Surveillez l'utilisation du cache** : Utilisez les statistiques pour optimiser votre stratégie de mise en cache.
 5. **Testez et mesurez** : Assurez-vous que l'utilisation du cache apporte réellement un bénéfice dans votre cas spécifique.
+</details>
+
+---
 
 ## 14. 🔄 Optimisation des Conversions de Type
-
+<details>
 Les conversions de type en Python, bien que souvent nécessaires, peuvent avoir un impact significatif sur les performances si elles ne sont pas gérées efficacement. Cette section explore en détail les meilleures pratiques pour optimiser les conversions de type, un aspect crucial de l'optimisation des performances en Python.
 
 ### 🔍 Concepts Clés
@@ -3333,42 +2597,6 @@ chaines = list(map(str, nombres))
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances de différentes approches de conversion :
-
-```python
-import timeit
-import statistics
-
-def conversion_int_str_naive():
-    return [str(i) for i in range(100000)]
-
-def conversion_int_str_map():
-    return list(map(str, range(100000)))
-
-def conversion_float_int_naive():
-    return [int(i) for i in range(100000)]
-
-def conversion_float_int_optimise():
-    return [int(float(i)) for i in range(100000)]
-
-def mesurer_temps(func, nombre=10):
-    temps = timeit.repeat(func, number=nombre, repeat=5)
-    return statistics.mean(temps)
-
-tests = [
-    ("Int to Str (naive)", conversion_int_str_naive),
-    ("Int to Str (map)", conversion_int_str_map),
-    ("Float to Int (naive)", conversion_float_int_naive),
-    ("Float to Int (optimisé)", conversion_float_int_optimise)
-]
-
-for nom, test in tests:
-    temps = mesurer_temps(test)
-    print(f"{nom}: {temps:.6f} secondes")
-```
-
-### 📈 Visualisation des Performances des Conversions de Type
 
 ```
 Temps d'exécution (échelle logarithmique)
@@ -3449,9 +2677,12 @@ Points clés à retenir :
 3. **Précomputez quand c'est possible** : Pour les conversions fréquentes, envisagez de les précomputer et de stocker les résultats.
 4. **Utilisez des outils spécialisés** : Pour les opérations sur de grands ensembles de données, des bibliothèques comme NumPy peuvent offrir des performances nettement supérieures.
 5. **Profilez et mesurez** : Comme toujours en optimisation, mesurez l'impact réel des changements sur les performances de votre application.
+</details>
+
+---
 
 ## 15. 🗑️ Garbage Collection
-
+<details>
 La gestion efficace du Garbage Collection (GC) en Python est cruciale pour optimiser les performances et l'utilisation de la mémoire. Cette section explore en détail les techniques avancées pour maîtriser le GC et améliorer les performances globales de vos applications Python.
 
 ### 🔍 Concepts Clés
@@ -3526,51 +2757,6 @@ class CacheAvecNettoyage:
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances avec différentes stratégies de GC :
-
-```python
-import gc
-import time
-import sys
-
-def creer_objets():
-    a = [i for i in range(1000000)]
-    b = [i for i in range(1000000)]
-    return a, b
-
-def mesurer_temps(func):
-    debut = time.time()
-    func()
-    return time.time() - debut
-
-def test_gc_auto():
-    gc.enable()
-    a, b = creer_objets()
-    del a, b
-
-def test_gc_manuel():
-    gc.disable()
-    a, b = creer_objets()
-    del a, b
-    gc.collect()
-    gc.enable()
-
-def test_gc_ajuste():
-    seuils_originaux = gc.get_threshold()
-    gc.set_threshold(1000000, 15, 15)
-    a, b = creer_objets()
-    del a, b
-    gc.set_threshold(*seuils_originaux)
-
-print(f"GC Auto: {mesurer_temps(test_gc_auto):.6f} secondes")
-print(f"GC Manuel: {mesurer_temps(test_gc_manuel):.6f} secondes")
-print(f"GC Ajusté: {mesurer_temps(test_gc_ajuste):.6f} secondes")
-
-print(f"Objets non collectés: {gc.collect()}")
-```
-
-### 📈 Visualisation des Performances du Garbage Collection
 
 ```
 Temps d'exécution (échelle logarithmique)
@@ -3657,9 +2843,12 @@ Points clés à retenir :
 5. **Surveillez et analysez** : Utilisez les outils de surveillance du GC pour comprendre son comportement dans votre application.
 6. **Optimisez pour l'immuabilité** : Tirez parti de `gc.freeze()` pour les objets immuables fréquemment utilisés.
 7. **Testez rigoureusement** : Toute modification de la gestion du GC doit être accompagnée de tests approfondis pour éviter les fuites de mémoire.
+</details>
+
+---
 
 ## 16. 📊 Utilisation des Typings
-
+<details>
 L'utilisation des typings en Python, bien qu'optionnelle, peut significativement améliorer la qualité du code, faciliter la détection d'erreurs et, dans certains cas, optimiser les performances. Cette section explore en détail les meilleures pratiques pour utiliser efficacement les typings en Python.
 
 ### 🔍 Concepts Clés
@@ -3720,35 +2909,6 @@ mypy mon_script.py
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances avec et sans typings :
-
-```python
-import timeit
-from typing import List
-
-def somme_sans_typing(nombres):
-    return sum(nombres)
-
-def somme_avec_typing(nombres: List[int]) -> int:
-    return sum(nombres)
-
-# Préparation des données
-donnees = list(range(1000000))
-
-# Mesure du temps d'exécution
-temps_sans_typing = timeit.timeit(lambda: somme_sans_typing(donnees), number=100)
-temps_avec_typing = timeit.timeit(lambda: somme_avec_typing(donnees), number=100)
-
-print(f"Sans typing: {temps_sans_typing:.6f} secondes")
-print(f"Avec typing: {temps_avec_typing:.6f} secondes")
-
-# Vérification avec mypy
-import os
-os.system("mypy test_typing.py")
-```
-
-### 📈 Visualisation des Performances avec Typings
 
 ```
 Temps d'exécution
@@ -3838,9 +2998,12 @@ Points clés à retenir :
 5. **Flexibilité préservée** : Python reste dynamiquement typé, les typings sont des indications, pas des contraintes strictes.
 6. **Évolution progressive** : Les typings peuvent être ajoutés progressivement à un projet existant.
 7. **Performance** : Bien que l'impact sur les performances d'exécution soit minime, les typings peuvent parfois permettre des optimisations de compilation (avec des outils comme Cython).
+</details>
 
+---
+    
 ## 17. 🔄 Utilisation de la Programmation Asynchrone
-
+<details>
 La programmation asynchrone en Python permet de gérer efficacement les opérations d'entrée/sortie (I/O) intensives, améliorant considérablement les performances des applications qui traitent de nombreuses tâches concurrentes. Cette section explore en détail les techniques avancées de programmation asynchrone en Python.
 
 ### 🔍 Concepts Clés
@@ -3926,49 +3089,6 @@ asyncio.run(main())
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances entre approches synchrone et asynchrone :
-
-```python
-import asyncio
-import time
-import aiohttp
-import requests
-
-async def fetch_async(session, url):
-    async with session.get(url) as response:
-        await response.text()
-
-async def fetch_all_async(urls):
-    async with aiohttp.ClientSession() as session:
-        tasks = [fetch_async(session, url) for url in urls]
-        await asyncio.gather(*tasks)
-
-def fetch_sync(url):
-    requests.get(url).text
-
-def fetch_all_sync(urls):
-    for url in urls:
-        fetch_sync(url)
-
-urls = ['http://example.com' for _ in range(100)]
-
-# Test synchrone
-start = time.time()
-fetch_all_sync(urls)
-duree_sync = time.time() - start
-print(f"Synchrone: {duree_sync:.2f} secondes")
-
-# Test asynchrone
-start = time.time()
-asyncio.run(fetch_all_async(urls))
-duree_async = time.time() - start
-print(f"Asynchrone: {duree_async:.2f} secondes")
-
-print(f"Gain de performance: {duree_sync / duree_async:.2f}x")
-```
-
-### 📈 Visualisation des Performances Asynchrones vs Synchrones
 
 ```
 Temps d'exécution (secondes)
@@ -4081,9 +3201,12 @@ Points clés à retenir :
 5. **Écosystème en expansion** : De nombreuses bibliothèques Python supportent maintenant les opérations asynchrones.
 6. **Performance vs Lisibilité** : Trouvez le bon équilibre entre l'optimisation des performances et la maintenabilité du code.
 7. **Testabilité** : Assurez-vous de bien tester votre code asynchrone, car les bugs peuvent être plus subtils à détecter.
+</details>
+
+---
 
 ## 18. 📚 Optimisation des Bibliothèques Standard
-
+<details>
 L'utilisation efficace des bibliothèques standard de Python peut considérablement améliorer les performances de vos applications. Cette section explore les techniques avancées pour optimiser l'utilisation des bibliothèques standard les plus courantes.
 
 ### 🔍 Concepts Clés
@@ -4165,40 +3288,6 @@ mediane = statistics.median(donnees)
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances de différentes approches :
-
-```python
-import timeit
-from collections import defaultdict, Counter
-
-def dict_classique():
-    d = {}
-    for mot in ['chat', 'chien', 'chat', 'poisson'] * 1000:
-        if mot not in d:
-            d[mot] = 0
-        d[mot] += 1
-
-def defaultdict_optimise():
-    d = defaultdict(int)
-    for mot in ['chat', 'chien', 'chat', 'poisson'] * 1000:
-        d[mot] += 1
-
-def counter_optimise():
-    Counter(['chat', 'chien', 'chat', 'poisson'] * 1000)
-
-# Mesure des performances
-print("Dict classique:", timeit.timeit(dict_classique, number=1000))
-print("defaultdict:", timeit.timeit(defaultdict_optimise, number=1000))
-print("Counter:", timeit.timeit(counter_optimise, number=1000))
-
-# Comparaison des opérations sur les chaînes
-setup = "texte = 'a' * 1000000"
-print("Concaténation:", timeit.timeit("texte + 'b'", setup=setup, number=1000))
-print("Join:", timeit.timeit("''.join([texte, 'b'])", setup=setup, number=1000))
-```
-
-### 📈 Visualisation des Performances des Bibliothèques Standard
 
 ```
 Temps d'exécution (échelle logarithmique)
@@ -4299,9 +3388,12 @@ Points clés à retenir :
 5. **Optimisation des E/S** : Utilisez les outils appropriés pour les opérations d'entrée/sortie, y compris en mémoire.
 6. **Mémoïsation intelligente** : Appliquez la mémoïsation pour les fonctions coûteuses appelées fréquemment.
 7. **Mesurer et comparer** : Testez toujours les performances pour vous assurer que vos optimisations apportent des bénéfices réels.
+</details>
+
+---
 
 ## 19. 🚀 Utilisation de la Compilation Just-in-Time (JIT)
-
+<details>
 La compilation Just-in-Time (JIT) est une technique avancée d'optimisation qui peut considérablement améliorer les performances de certains types de code Python. Cette section explore en détail l'utilisation de la JIT en Python, principalement à travers l'utilisation de Numba.
 
 ### 🔍 Concepts Clés
@@ -4391,45 +3483,6 @@ print(resultat)
 
 ### 📊 Analyse Comparative
 
-Voici un script pour comparer les performances avec et sans JIT :
-
-```python
-import time
-import numpy as np
-from numba import jit
-
-def fonction_python(n):
-    somme = 0
-    for i in range(n):
-        somme += i * i
-    return somme
-
-@jit(nopython=True)
-def fonction_numba(n):
-    somme = 0
-    for i in range(n):
-        somme += i * i
-    return somme
-
-n = 100000000
-
-# Test Python pur
-debut = time.time()
-resultat_python = fonction_python(n)
-temps_python = time.time() - debut
-print(f"Python pur: {temps_python:.4f} secondes")
-
-# Test Numba
-debut = time.time()
-resultat_numba = fonction_numba(n)
-temps_numba = time.time() - debut
-print(f"Numba: {temps_numba:.4f} secondes")
-
-print(f"Accélération: {temps_python / temps_numba:.2f}x")
-```
-
-### 📈 Visualisation des Performances avec JIT
-
 ```
 Temps d'exécution (échelle logarithmique)
 ^
@@ -4513,9 +3566,12 @@ Points clés à retenir :
 5. **Typage** : Fournissez des informations de type explicites pour une meilleure optimisation.
 6. **Parallélisation** : Exploitez la parallélisation automatique pour des gains supplémentaires.
 7. **Équilibre** : Pesez les avantages de la JIT par rapport à la complexité accrue et aux dépendances supplémentaires.
+</details>
+
+---
 
 ## 20. 📊 Gestion des Entrées/Sorties Massives
-
+<details>
 La gestion efficace des entrées/sorties (E/S) massives est cruciale pour les applications Python traitant de grandes quantités de données. Cette section explore les techniques avancées pour optimiser les opérations E/S, en mettant l'accent sur la performance et l'efficacité.
 
 ### 🔍 Concepts Clés
@@ -4588,58 +3644,6 @@ async def ecrire_async(fichier, donnees):
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances de différentes approches d'E/S :
-
-```python
-import time
-import os
-import mmap
-import asyncio
-import aiofiles
-
-# Création d'un grand fichier de test
-fichier_test = 'grand_fichier.txt'
-with open(fichier_test, 'w') as f:
-    f.write('x' * 100000000)
-
-def lecture_classique():
-    with open(fichier_test, 'r') as f:
-        return f.read()
-
-def lecture_par_blocs():
-    contenu = []
-    with open(fichier_test, 'r') as f:
-        while True:
-            bloc = f.read(8192)
-            if not bloc:
-                break
-            contenu.append(bloc)
-    return ''.join(contenu)
-
-def lecture_mmap():
-    with open(fichier_test, 'r+b') as f:
-        mm = mmap.mmap(f.fileno(), 0)
-        return mm.read()
-
-async def lecture_async():
-    async with aiofiles.open(fichier_test, mode='r') as f:
-        return await f.read()
-
-def mesurer_temps(func):
-    debut = time.time()
-    func()
-    return time.time() - debut
-
-print(f"Lecture classique: {mesurer_temps(lecture_classique):.4f} secondes")
-print(f"Lecture par blocs: {mesurer_temps(lecture_par_blocs):.4f} secondes")
-print(f"Lecture mmap: {mesurer_temps(lecture_mmap):.4f} secondes")
-print(f"Lecture async: {mesurer_temps(asyncio.run(lecture_async())):.4f} secondes")
-
-os.remove(fichier_test)
-```
-
-### 📈 Visualisation des Performances d'E/S
 
 ```
 Temps d'exécution (échelle logarithmique)
@@ -4735,9 +3739,12 @@ Points clés à retenir :
 5. **Parallélisation** : Tirez parti du traitement parallèle pour les opérations E/S indépendantes.
 6. **Spécialisation** : Utilisez des bibliothèques spécialisées comme numpy pour les données numériques.
 7. **Test et mesure** : Profilez toujours vos opérations E/S et optimisez en fonction des résultats réels.
+</details>
+
+---
 
 ## 21. 📦 Optimisation de la Sérialisation
-
+<details>
 La sérialisation et la désérialisation efficaces des données sont cruciales pour les performances des applications Python, en particulier celles qui traitent de grandes quantités de données ou qui communiquent fréquemment sur le réseau. Cette section explore les techniques avancées pour optimiser ces processus.
 
 ### 🔍 Concepts Clés
@@ -4809,44 +3816,6 @@ def deserialiser_protobuf(donnees):
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances des différentes méthodes de sérialisation :
-
-```python
-import json
-import pickle
-import msgpack
-import timeit
-from person_pb2 import Person
-
-donnees = {"nom": "Alice", "age": 30, "ville": "Paris"}
-
-def test_json():
-    serialise = json.dumps(donnees)
-    deserialise = json.loads(serialise)
-
-def test_pickle():
-    serialise = pickle.dumps(donnees)
-    deserialise = pickle.loads(serialise)
-
-def test_msgpack():
-    serialise = msgpack.packb(donnees)
-    deserialise = msgpack.unpackb(serialise)
-
-def test_protobuf():
-    personne = Person(name=donnees["nom"], age=donnees["age"])
-    serialise = personne.SerializeToString()
-    deserialise = Person()
-    deserialise.ParseFromString(serialise)
-
-nombre = 100000
-print(f"JSON: {timeit.timeit(test_json, number=nombre):.4f} secondes")
-print(f"Pickle: {timeit.timeit(test_pickle, number=nombre):.4f} secondes")
-print(f"MessagePack: {timeit.timeit(test_msgpack, number=nombre):.4f} secondes")
-print(f"Protocol Buffers: {timeit.timeit(test_protobuf, number=nombre):.4f} secondes")
-```
-
-### 📈 Visualisation des Performances de Sérialisation
 
 ```
 Temps d'exécution (échelle logarithmique)
@@ -4940,9 +3909,12 @@ Points clés à retenir :
 5. **Bibliothèques Optimisées** : Utilisez des bibliothèques optimisées comme ujson pour des gains de performance supplémentaires.
 6. **Tests de Performance** : Effectuez toujours des tests de performance pour valider vos choix de sérialisation.
 7. **Évolutivité** : Pensez à l'évolutivité de vos données sérialisées, surtout pour les systèmes à long terme.
+</details>
+
+---
 
 ## 22. 🧵 Utilisation de la Concurrence avec les Futures
-
+<details>
 L'utilisation efficace de la concurrence avec les Futures en Python peut considérablement améliorer les performances des applications, en particulier pour les tâches I/O-bound et CPU-bound. Cette section explore en détail les techniques avancées pour exploiter les Futures et optimiser la concurrence.
 
 ### 🔍 Concepts Clés
@@ -5022,42 +3994,6 @@ with ThreadPoolExecutor(max_workers=4) as executor:
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances des différentes approches de concurrence :
-
-```python
-import time
-import requests
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
-
-def fetch_url(url):
-    response = requests.get(url)
-    return len(response.content)
-
-urls = ['http://example.com'] * 100
-
-def sequentiel():
-    return [fetch_url(url) for url in urls]
-
-def avec_thread_pool():
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        return list(executor.map(fetch_url, urls))
-
-def avec_process_pool():
-    with ProcessPoolExecutor(max_workers=10) as executor:
-        return list(executor.map(fetch_url, urls))
-
-def mesurer_temps(func):
-    debut = time.time()
-    func()
-    return time.time() - debut
-
-print(f"Séquentiel: {mesurer_temps(sequentiel):.2f} secondes")
-print(f"ThreadPoolExecutor: {mesurer_temps(avec_thread_pool):.2f} secondes")
-print(f"ProcessPoolExecutor: {mesurer_temps(avec_process_pool):.2f} secondes")
-```
-
-### 📈 Visualisation des Performances de Concurrence
 
 ```
 Temps d'exécution (échelle logarithmique)
@@ -5168,9 +4104,12 @@ Points clés à retenir :
 5. **Gestion des Erreurs** : Implémentez une gestion robuste des exceptions pour maintenir la stabilité de votre application.
 6. **Combinaison de Techniques** : N'hésitez pas à combiner différentes approches pour optimiser différents types de tâches.
 7. **Test et Profilage** : Testez toujours les performances dans des conditions réelles et profilez votre code pour identifier les goulots d'étranglement.
+</details>
+
+---
 
 ## 23. 🗜️ Compression des Données
-
+<details>
 La compression des données est une technique cruciale pour optimiser les performances en réduisant la taille des données traitées et stockées. Cette section explore les méthodes avancées de compression en Python, leurs impacts sur les performances et les cas d'utilisation optimaux.
 
 ### 🔍 Concepts Clés
@@ -5247,38 +4186,6 @@ decompresse = decompresser_bz2(compresse)
 ```
 
 ### 📊 Analyse Comparative
-
-Voici un script pour comparer les performances des différentes méthodes de compression :
-
-```python
-import zlib
-import gzip
-import lzma
-import bz2
-import time
-
-def mesurer_compression(func, donnees):
-    debut = time.time()
-    compresse = func(donnees)
-    fin = time.time()
-    ratio = len(compresse) / len(donnees)
-    return fin - debut, ratio
-
-donnees = b"Exemple de texte a compresser" * 100000
-
-methodes = [
-    ("Zlib", zlib.compress),
-    ("GZIP", gzip.compress),
-    ("LZMA", lzma.compress),
-    ("BZ2", bz2.compress)
-]
-
-for nom, methode in methodes:
-    temps, ratio = mesurer_compression(methode, donnees)
-    print(f"{nom}: Temps = {temps:.4f}s, Ratio = {ratio:.4f}")
-```
-
-### 📈 Visualisation des Performances de Compression
 
 ```
 Ratio de Compression (plus bas = meilleur)
@@ -5389,3 +4296,6 @@ Points clés à retenir :
 5. **Grands volumes** : Utilisez des techniques de streaming pour gérer efficacement les grands volumes de données.
 6. **Niveaux de compression** : Expérimentez avec différents niveaux de compression pour optimiser les performances.
 7. **Mesure et test** : Évaluez toujours l'impact de la compression sur les performances globales de votre application.
+</details>
+
+---
